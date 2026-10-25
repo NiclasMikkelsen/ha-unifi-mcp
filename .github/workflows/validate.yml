@@ -1,0 +1,64 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: YAML / JSON syntax
+        run: |
+          set -euo pipefail
+          python3 -m pip install --quiet pyyaml
+          changed=""
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            changed=$(gh pr view "$GITHUB_REPOSITORY#${{ github.event.pull_request.number }}" \
+              --json files -q '.files[].path' 2>/dev/null || true)
+          fi
+          if [ -z "$changed" ]; then
+            changed=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git ls-files)
+          fi
+          python3 - <<'PY'
+          import json, sys, os
+          import yaml
+          files = os.environ.get("CHANGED", "").splitlines()
+          bad = False
+          for f in files:
+              f = f.strip()
+              if not f:
+                  continue
+              if f.endswith((".yaml", ".yml")):
+                  try:
+                      with open(f) as fh:
+                          list(yaml.safe_load_all(fh))
+                  except Exception as e:
+                      bad = True
+                      print(f"YAML-parse fel i {f}: {e}")
+              elif f.endswith(".json"):
+                  try:
+                      with open(f) as fh:
+                          json.load(fh)
+                  except Exception as e:
+                      bad = True
+                      print(f"JSON-parse fel i {f}: {e}")
+          sys.exit(1 if bad else 0)
+          PY
+        env:
+          CHANGED: "${{ env.changed }}"
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Verify project
+        run: |
+          if [ -x scripts/verify-project.sh ]; then
+            bash scripts/verify-project.sh
+          else
+            echo "scripts/verify-project.sh saknas — hoppar över"
+          fi
