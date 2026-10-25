@@ -19,8 +19,8 @@ connectorn i Aperture med fyra smala, separata MCP:er.
   `ghcr.io/enuno/unifi-mcp-server:latest` (multi-arch amd64 + aarch64). Endast
   `run.sh` läggs till — den mappar HA-appens options till upstreams
   miljövariabler.
-- `host_network: true`, samma mönster som `81f33d0f_ha_mcp`, så att Aperture
-  kan nå servern på `<site>-homeassistant.tailb6ed4a.ts.net:<port>/mcp` utan
+- `host_network: true`, samma mönster som Home Assistant MCP Server-appen, så
+  att en MCP-gateway kan nå servern på `<ha-host>:<port>/mcp` över tailnet utan
   proxy i något CT.
 - Varje instans kräver `mcp_auth_token`; servern svarar bara med
   `Authorization: Bearer <token>`.
