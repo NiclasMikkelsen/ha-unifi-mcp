@@ -1,0 +1,22 @@
+name: UniFi MCP (Site Manager)
+version: "0.1.0"
+slug: unifi_site_manager
+description: Read-only UniFi Site Manager MCP server (api.ui.com) across all sites
+url: https://github.com/nvm1995/ha-unifi-mcp/tree/main/unifi-site-manager
+arch:
+  - amd64
+  - aarch64
+init: false
+host_network: true
+startup: services
+boot: auto
+options:
+  unifi_api_type: cloud-ea
+  unifi_api_key: ""
+  mcp_port: 8766
+  mcp_auth_token: ""
+schema:
+  unifi_api_type: list(cloud-ea|cloud-v1)
+  unifi_api_key: password
+  mcp_port: port
+  mcp_auth_token: password
