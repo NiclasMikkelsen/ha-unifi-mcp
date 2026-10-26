@@ -28,7 +28,7 @@ connectorn i Aperture med fyra smala, separata MCP:er.
 ## Installation
 
 1. HA → Inställningar → Appar → Appbutik → ⋮ → Repositories → lägg till
-   `https://github.com/nvm1995/ha-unifi-mcp`.
+   `https://github.com/NiclasMikkelsen/ha-unifi-mcp`.
 2. Installera **UniFi MCP (site)**.
 3. Fyll i konfigurationen:
    - `unifi_local_host` — konsolens LAN-IP (t.ex. `192.168.50.1`)
