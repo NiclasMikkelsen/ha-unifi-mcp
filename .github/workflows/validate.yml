@@ -26,6 +26,15 @@ jobs:
           if [ -z "$changed" ]; then
             changed=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git ls-files)
           fi
+          # Listan skickas via $GITHUB_ENV. Den tidigare formen
+          # (`env: CHANGED: "${{ env.changed }}"`) läste en kontext som aldrig
+          # sätts, så loopen i python fick en tom lista och steget gick igenom
+          # utan att titta på en enda fil.
+          {
+            echo "CHANGED<<__CHANGED_EOF__"
+            printf '%s\n' "$changed"
+            echo "__CHANGED_EOF__"
+          } >> "$GITHUB_ENV"
           python3 - <<'PY'
           import json, sys, os
           import yaml
@@ -52,7 +61,6 @@ jobs:
           sys.exit(1 if bad else 0)
           PY
         env:
-          CHANGED: "${{ env.changed }}"
           GH_TOKEN: ${{ github.token }}
 
       - name: Verify project
