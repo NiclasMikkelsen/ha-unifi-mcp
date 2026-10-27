@@ -1,13 +1,18 @@
 # ha-unifi-mcp
 
-Home Assistant-appar som kör en **läs-only** UniFi-MCP-server per site, plus en
-för UniFi Site Manager. Syftet är att ersätta den enda breda `UniFiAll`-
-connectorn i Aperture med fyra smala, separata MCP:er.
+Home Assistant-appar för UniFi: en **läs-only** UniFi-MCP-server per site, en
+för UniFi Site Manager, och ett syslog-relä för sajter utan egen Proxmox-host.
+MCP:erna syftar till att ersätta den enda breda `UniFiAll`-connectorn i
+Aperture med fyra smala, separata MCP:er.
 
 | App | Slug | Port | Vad den täcker |
 |---|---|---|---|
 | UniFi MCP (site) | `unifi_mcp` | 8765 | En lokal UniFi-konsol (UCG) via Integration API |
 | UniFi MCP (Site Manager) | `unifi_site_manager` | 8766 | Alla konsoler via `api.ui.com` |
+| UniFi Syslog Relay | `unifi_syslog_relay` | 1514/udp | Vidarebefordrar konsolens CEF-syslog till Alloy |
+
+Syslog-reläet behövs bara där ingen Proxmox-host med Alloy finns (Taurito);
+se [unifi-syslog-relay/README.md](unifi-syslog-relay/README.md).
 
 ## Arkitektur
 
@@ -47,6 +52,9 @@ connectorn i Aperture med fyra smala, separata MCP:er.
   appkonfiguration och loggas aldrig av `run.sh`.
 - Servern lyssnar på `0.0.0.0` eftersom `host_network` krävs för tailnet-åtkomst.
   Skyddet är bearer-token, inte nätverksisolering.
+- Syslog-reläet tar emot oautentiserad UDP på LAN-porten, precis som konsolerna
+  gör mot Proxmox i dag. Det vidarebefordrar bara till en fast mottagare —
+  det går inte att använda som öppen vidarebefordrare.
 
 ## Kända gränser
 

@@ -1,0 +1,24 @@
+name: UniFi Syslog Relay
+version: "0.1.0"
+slug: unifi_syslog_relay
+description: Tar emot UniFi CEF-syslog på UDP, lägger på RFC5424-PRI och vidaresänder till Alloy
+url: https://github.com/NiclasMikkelsen/ha-unifi-mcp/tree/main/unifi-syslog-relay
+arch:
+  - amd64
+  - aarch64
+init: false
+host_network: true
+startup: services
+boot: auto
+options:
+  listen_port: 1514
+  forward_host: ""
+  forward_port: 1517
+  syslog_facility: 1
+  syslog_severity: 6
+schema:
+  listen_port: port
+  forward_host: str
+  forward_port: port
+  syslog_facility: int(0,23)
+  syslog_severity: int(0,7)
