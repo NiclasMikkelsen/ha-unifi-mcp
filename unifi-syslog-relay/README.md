@@ -16,10 +16,17 @@ first byte: 'O'"*. Relayen lägger på `<14>1 - - - - - - ` (facility 1, severit
 och lämnar CEF-raden orörd.
 
 Appen behövs bara på sajter som **saknar** en Proxmox-host med Alloy. På
-Töcksfors och Karlstad körs samma logik som en systemd-tjänst på Proxmox
+Töcksfors och Karlstad körs samma kod som en systemd-tjänst på Proxmox
 (`unifi-syslog-relay.service` i `HomeLab/observability/alloy/`). Taurito har
 ingen Proxmox — Home Assistant-hårdvaran är för liten för ännu en agent — så
 reläet körs som app där i stället och skickar vidare över tailnet.
+
+**`relay.py` i den här katalogen är kanonisk.** Observability-repot har en
+byte-identisk kopia som distribueras till Proxmox-hostarna, och dess CI fäller
+varje avvikelse. Båda förpackningarna konfigureras med samma miljövariabler
+(`LISTEN_HOST`, `LISTEN_PORT`, `FORWARD_HOST`, `FORWARD_PORT`,
+`SYSLOG_FACILITY`, `SYSLOG_SEVERITY`) — appen via `/data/options.json`,
+systemd via `Environment=`.
 
 ## Dataflöde (Taurito)
 

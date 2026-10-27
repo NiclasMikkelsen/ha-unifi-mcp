@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Vidarebefordrar UniFi-syslog från konsolen till Alloy på karlstad-proxmox.
+"""Vidarebefordrar UniFi-syslog till Alloy med RFC5424-header.
 
 UniFi-konsolerna (CyberSecure → Traffic Logging → SIEM Server) skickar CEF-rader
 utan PRI, t.ex.
@@ -7,15 +7,21 @@ utan PRI, t.ex.
     Oct 27 08:27:36 Taurito CEF:0|Ubiquiti|UniFi Network|11.0.97|521|VPN Client Disconnected|2|UNIFIcategory=VPN ...
 
 `loki.source.syslog` i Alloy kräver en PRI och avvisar annars raden med
-"invalid or unsupported framing. first byte: 'O'". Den här appen tar emot
-datagrammen på UDP, lägger på en RFC5424-header och skickar vidare till
-reläet på karlstad-proxmox, som lämnar dem till Alloy.
-
-CEF-raden lämnas orörd i MSG — det är den `loki.process` parsar senare. Appen
-översätter alltså inte CEF-severity till PRI; den lägger bara på en fast
+"invalid or unsupported framing. first byte: 'O'". Den här bryggan tar emot
+datagrammen på UDP, lägger på en RFC5424-header och skickar vidare till Alloy.
+CEF-raden lämnas orörd i MSG så inget innehåll går förlorat; den översätter
+alltså inte CEF-severity till PRI, den lägger bara på en fast
 facility/severity så att raden accepteras.
 
-Endast stdlib används, så imagen behöver inget utöver python3.
+DEN HÄR FILEN ÄR KANONISK. Samma byte-for-byte-kopia ligger i
+`observability/alloy/unifi-syslog-relay.py` och installeras som systemd-tjänst
+på Proxmox-hostarna. Redigera den bara härifrån och kopiera sedan över —
+observability-repots CI hämtar den här filen från main och fäller varje
+avvikelse i kopian.
+
+Konfigurationen är miljövariabler eftersom båda förpackningarna kan sätta dem:
+HA-appen via /data/options.json, systemd via Environment=. Endast stdlib
+används, så imagen behöver inget utöver python3.
 """
 
 from __future__ import annotations
