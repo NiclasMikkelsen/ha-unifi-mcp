@@ -1,5 +1,5 @@
 name: UniFi MCP (site)
-version: "0.1.0"
+version: "0.1.1"
 slug: unifi_mcp
 description: Read-only UniFi Network MCP server bound to one site's local console
 url: https://github.com/NiclasMikkelsen/ha-unifi-mcp/tree/main/unifi-mcp
@@ -15,12 +15,14 @@ options:
   unifi_api_key: ""
   unifi_profile: network
   unifi_read_only: true
+  unifi_debug: false
   mcp_port: 8765
   mcp_auth_token: ""
 schema:
   unifi_local_host: str
   unifi_api_key: password
-  unifi_profile: list(minimal|network|devices|security|system)
+  unifi_profile: list(minimal|network|devices|security|system|protect|all)
   unifi_read_only: bool
+  unifi_debug: bool
   mcp_port: port
   mcp_auth_token: password
