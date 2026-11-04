@@ -56,6 +56,19 @@ se [unifi-syslog-relay/README.md](unifi-syslog-relay/README.md).
   gör mot Proxmox i dag. Det vidarebefordrar bara till en fast mottagare —
   det går inte att använda som öppen vidarebefordrare.
 
+## Driftläge 2026-11-04
+
+Alla tre sajter kör `unifi_profile: all` (344 verktyg: Network, enheter, brandvägg/ZBF, VPN,
+trafikrutter, portforwarding, backup, DPI), `unifi_read_only: false` och `unifi_debug: true`.
+Skriv kräver `confirm=True` per anrop. Det betyder att README:s tidigare "read-only som default"
+gäller *appens default*, inte driften. Uppmätt kostnad, fällor och rollback:
+`HomeLab/UniFi/UniFi-MCP-Bridge/docs/ha-app-per-sajt.md`.
+
+**Taurito: watchdog är avstängd** (`watchdog: false`). Profilen `all` bootar på aarch64 på ~2 min,
+och Supervisors watchdog startade om containern var ~95:e sekund så den aldrig blev `started`.
+Slå inte på den igen utan att först mäta bootiden. Ändra inte `version` i `config.yaml` utan
+att tänka på att Taurito har `auto_update: true` — en uppdatering startar om appen där.
+
 ## Kända gränser
 
 - Karlstad och Töcksfors har bara ~550 MB ledigt RAM. Börja på `network`;

@@ -28,7 +28,10 @@
 - **Least privilege:** Bara `label:cap.ha` för agentflottan — ingen skrivåtkomst.
 - **Separata grants per site:** Karlstad, Töcksfors, Taurito har egna MCP-endpoints.
 - **Site Manager:** Separat connector (`UniFiSiteManager`) för översikt över alla konsoler.
-- **Skrivåtkomst:** Kräver `UNIFI_READ_ONLY=false` + högre roll i Aperture-grants. Kräver beslut.
+- **Skrivåtkomst:** Kräver `UNIFI_READ_ONLY=false` + högre roll i Aperture-grants. Beslut taget
+  2026-11-04: appen kör `read_only=false` och profil `all` på alla tre sajter. Åtkomsten styrs av
+  grants, inte av appen: bara `nvm1995@icloud.com` (explicit) och `tag:proxmox` (admin, via
+  `label:cap.network`) når UniFi-connectorerna. `tag:agent`, `tag:ha` och `tag:mac` har inga UniFi-verktyg.
 - **Inga breda grants:** `UniFiAll` ersätts av de fyra smala MCP:erna.
 
 ## Hemligheter
