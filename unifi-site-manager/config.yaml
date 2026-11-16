@@ -1,5 +1,5 @@
 name: UniFi MCP (Site Manager)
-version: "0.1.0"
+version: "0.1.1"
 slug: unifi_site_manager
 description: Read-only UniFi Site Manager MCP server (api.ui.com) across all sites
 url: https://github.com/NiclasMikkelsen/ha-unifi-mcp/tree/main/unifi-site-manager

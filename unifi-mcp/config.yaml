@@ -1,5 +1,5 @@
 name: UniFi MCP (site)
-version: "0.1.1"
+version: "0.1.2"
 slug: unifi_mcp
 description: Read-only UniFi Network MCP server bound to one site's local console
 url: https://github.com/NiclasMikkelsen/ha-unifi-mcp/tree/main/unifi-mcp
