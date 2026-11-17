@@ -10,7 +10,7 @@ Denna mapp är ett **projekt** i den delade träden `~/AgentWorkspace/Project`.
 Arbeta direkt i denna mapp (inga privata kloner). Allt projektmaterial, analys och data stannar här —
 även resultat från Windows 910, MacBook Pro och MacBook Air skrivs tillbaka hit.
 
-<!-- städpolicy:genererad ur Agents/catalog/agent-policy.md sha256:c8f723ff58bb -->
+<!-- städpolicy:genererad ur Agents/catalog/agent-policy.md sha256:24e462d2537a -->
 Skapande lämnar inget efter sig. En agent glömmer — därför finns också
 `~/bin/agent-cleanup.sh`, som körs vid varje sessionsslut och en gång per dygn.
 
@@ -18,8 +18,11 @@ Skapande lämnar inget efter sig. En agent glömmer — därför finns också
   kopia i `~/.agent-scratch/<uppgift>/`.
 - När uppgiften är klar: ta bort temporära filer, worktrees, scratch och
   testresurser som du själv har skapat.
-- Gammalt material som ska sparas flyttas till Archive-sharen:
-  `Archive/<site>/<sökväg>/<fil>`. Det raderas aldrig direkt.
+- Gammalt material som ska sparas flyttas **alltid** till arkivet på 2 TB-disken i Karlstad:
+  `karlstad-proxmox.tailb6ed4a.ts.net:/mnt/store/archive`, enbart över SSH och alltid via
+  `agent-archive` — aldrig en lokal mapp, aldrig en kopia bredvid originalet. Samma mål gäller
+  för alla agenter (Claude, Codex, Hermes, OpenCode, Gemini, Cursor, Antigravity).
+  Det raderas aldrig direkt.
 - Flytta bara: kopiera först, verifiera (storlek + checksumma) och radera källan sist.
 - Arkivera aldrig filer som kan innehålla hemligheter (`.claude.json*`, `.env`,
   tokens). Radera dem efter retention i stället.
