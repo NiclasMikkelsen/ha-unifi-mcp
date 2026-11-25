@@ -10,7 +10,10 @@ permissions:
 
 jobs:
   validate:
-    runs-on: ${{ fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
+    # Publikt repo: GitHub-hostade runners är gratis och obegränsade här, så
+    # jobbet ska inte vara beroende av en intern runner-grupp. CI_RUNNER
+    # (D50) finns för de privata repon, där hostade minuter tar slut.
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
