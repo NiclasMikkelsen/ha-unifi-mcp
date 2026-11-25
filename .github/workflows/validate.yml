@@ -9,20 +9,21 @@ permissions:
   contents: read
 
 jobs:
-  # Strukturen först: varje app ska ha name, version, slug, description och
-  # arch, slugen ska vara unik, och varje nyckel i options ska finnas i schema.
-  # Det är fel Home Assistant upptäcker först när appen startar, inte i
-  # YAML-parsningen nedan. Flödet bor i agent-ci, en källa för alla repon.
-  struktur:
-    uses: NiclasMikkelsen/agent-ci/.github/workflows/ha-structure.yml@main
-    with:
-      kind: app
-
   validate:
-    needs: struktur
     runs-on: ${{ fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
     steps:
       - uses: actions/checkout@v4
+
+      # Strukturen först: varje app ska ha name, version, slug, description och
+      # arch, slugen ska vara unik, och varje nyckel i options ska finnas i
+      # schema. Det är fel Home Assistant upptäcker först när appen startar,
+      # inte i YAML-parsningen nedan.
+      #
+      # Skriptet är en kopia av tools/verify_structure.py i agent-ci. Repot är
+      # publikt, och en publik anropare kan inte läsa ett privat flöde — samma
+      # skäl som för den egna secrets-scan.yml. Ändra i agent-ci och kopiera hit.
+      - name: Struktur
+        run: python3 tools/verify_structure.py --root . --kind app
 
       - name: YAML / JSON syntax
         run: |
